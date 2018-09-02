@@ -1,5 +1,6 @@
 # myAlgoLib
-包含
-1、经典算法的实现
-2、遇到的笔试题
-3、一些常用的功能实现
+<ul>myLibTest - 测试.h .cpp的用法，测试static变量，全局变量 </ul>
+<ul>myMakeFile - 简单学习makefile的用法</ul>
+<ul>myThread - 学习POSIX pthread库的多线程用法</ul>
+<ul>myAlgo - 常用算法的实现(sort, tree)</ul>
+<ul>other - 笔试中会用到的字符串解析</ul>
