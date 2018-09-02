@@ -46,7 +46,7 @@ private:
 
 	// select sort
 	// ave   good   bad   space  
-	// o(n2) o(n2)  o(n2) o(1)   stable
+	// o(n2) o(n2)  o(n2) o(1)   unstable
 	void selectSort(vector<int> &vec) {
 		if (vec.size() <= 1) return;
 		int n = vec.size();
