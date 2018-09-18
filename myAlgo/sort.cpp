@@ -18,9 +18,9 @@ public:
         //insertSort(ivec);
         //selectSort(ivec);
         //popSort(ivec);
-        //mergeSort(ivec, 0, ivec.size() - 1);
+        mergeSort(ivec, 0, ivec.size() - 1);
         //quickSort(ivec, 0, ivec.size() - 1);
-        heapSort(ivec);
+        //heapSort(ivec);
         return;
     }
 
@@ -107,62 +107,56 @@ private:
     // o(nlogn) o(nlogn)  o(n2)    o(logn)~o(n)   unstable
     void quickSort(vector<int> &ivec, int lo, int hi) {
         if (lo >= hi) return;
-        printVec(ivec);
-        int i = partition(ivec, lo, hi);
-        quickSort(ivec, lo, i - 1);
-        quickSort(ivec, i + 1, hi);
-        return;
+        int mid = partition(ivec, lo, hi);
+        quickSort(ivec, lo, mid - 1);
+        quickSort(ivec, mid + 1, hi);
     }
 
     int partition(vector<int> &ivec, int lo, int hi) {
-        int i = lo, j = hi, base = ivec[lo];
-        while (i < j) {
-            while (i < j && ivec[j] >= base) j--;
-            ivec[i] = ivec[j];
-            while (i < j && ivec[i] <= base) i++;
-            ivec[j] = ivec[i];
+        int pivot = ivec[lo];
+        while (lo < hi) {
+            while (lo < hi && ivec[lo] < pivot) lo++;
+            ivec[hi] = ivec[lo];
+            while (lo < hi && ivec[hi] >= pivot) hi--;
+            ivec[lo] = ivec[hi];
         }
-        ivec[i] = base;
-        return i;
+        ivec[lo] = pivot;
+        return lo;
     }
 
     // merge sort
     // ave      good      bad      space  
     // o(nlogn) o(nlogn)  o(nlogn) o(n)   stable
-    void mergeSort(vector<int> &ivec, size_t lo, size_t hi) {
+    void mergeSort(vector<int> &ivec, int lo, int hi) {
         if (hi - lo <= 0) return;
         if (hi - lo == 1) {
             if (ivec[lo] > ivec[hi]) swap(ivec[lo], ivec[hi]);
             else return;
         }
-        size_t mid = lo + (hi - lo) / 2;
+        int mid = lo + (hi - lo) / 2;
         mergeSort(ivec, lo, mid);
         mergeSort(ivec, mid + 1, hi);
-        mergeVec(ivec, lo, hi, mid);
-        return;
+        merge(ivec, lo, hi, mid);
     }
 
-    void mergeVec(vector<int> &ivec, int lo, int hi, int mid) {
-        vector<int> extraVec(hi - lo + 1, 0);
-        for (size_t cur = 0, curLo = lo, curMid = mid + 1; cur < extraVec.size();) {
-            // step_1
-            while (curLo == mid + 1 && cur < extraVec.size()) extraVec[cur++] = ivec[curMid++];
-            while (curMid == hi + 1 && cur < extraVec.size()) extraVec[cur++] = ivec[curLo++];
-            if (cur == extraVec.size()) break;
-            // step_2
-            if (ivec[curLo] < ivec[curMid]) extraVec[cur++] = ivec[curLo++];
-            else extraVec[cur++] = ivec[curMid++];
+    void merge(vector<int> &ivec, int lo, int hi, int mid) {
+        vector<int> sup(hi - lo + 1, 0);
+        int l = lo, r = mid + 1;
+        for (int i = 0; i < hi - lo + 1; ) {
+            while (l == mid + 1 && r <= hi) sup[i++] = ivec[r++];
+            while (r == hi + 1 && l <= mid) sup[i++] = ivec[l++];
+            if (i == hi - lo + 1) break;
+            if (ivec[l] < ivec[r]) sup[i++] = ivec[l++];
+            else sup[i++] = ivec[r++];
         }
-        // step_3
-        for (size_t cur = 0, curLo = lo; cur < extraVec.size();) ivec[curLo++] = extraVec[cur++];
-        return;
+        for (int i = 0; i < hi - lo + 1; i++) ivec[lo + i] = sup[i];
     }
 
 };
 
 int main()
 {
-    vector<int> ivec = { 6, 2, 3, 5 ,7 ,9, 11, 2, 2 };//{ 3, 7, 3, 4, 4 ,2 };
+    vector<int> ivec = { 6, 2, 3, 5 ,7 ,9, 11, 2, 2 };
     Solution s;
     s.sort(ivec);
 
